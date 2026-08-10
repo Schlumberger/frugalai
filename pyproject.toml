@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "frugal"
+description = "Frugal : A minimial agentic module"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.12"
+authors = [
+  { name = "Michael John Williams", email = "miw@slb.com" }
+]
+keywords = ["frugal", "secure", "resumable", "resilient", "independent", "hybrid"]
+
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Environment :: Other Environment",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "License :: Other/Proprietary License",
+  "Natural Language :: English",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Scientific/Engineering :: Physics",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: Utilities"
+]
+
+# dynamic values populated by setuptools
+dynamic = ["version"]
+
+[project.urls]
+Repository = "https://github.com/Schlumberger/frugalai"
+
+# ------------------------
+# setuptools configuration
+# ------------------------
+
+[tool.setuptools]
+zip-safe = false
+packages = { find = {} }
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = { attr = "frugal.__version__" }
+
+
+[tool.setuptools.package-data]
+# replaces your package_files() walk
+frugal = ["**/*"]
