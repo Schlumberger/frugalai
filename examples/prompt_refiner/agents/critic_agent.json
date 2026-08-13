@@ -1,0 +1,7 @@
+{
+  "name": "CriticAgent",
+  "description": "The current system prompt and the generated response are reviewed against a corrected or preferred output provided by a world-class expert.",
+  "system_prompt_file" : "critic_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 1000
+}

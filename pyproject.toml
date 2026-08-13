@@ -3,7 +3,7 @@ requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "frugal"
+name = "frugalai"
 description = "Frugal : A minimial agentic module"
 readme = "README.md"
 license = { file = "LICENSE" }

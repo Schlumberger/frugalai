@@ -1,0 +1,35 @@
+routes:
+  - path: /dag
+    methods: [GET, POST]
+    agent_dir: ../examples/prompt_refiner
+    workflow:
+       DAGAgent : []
+       ExtractAgent : [DAGAgent]
+    visitor: DefaultVisitor
+
+  - path: /prompt_creator
+    methods: [GET, POST]
+    agent_dir: ../examples/prompt_refiner
+    workflow:
+      CreateAgent : []
+    visitor: DefaultVisitor
+
+  - path: /critic
+    methods: [GET, POST]
+    agent_dir: ../examples/prompt_refiner
+    workflow:
+       CriticAgent : []
+    visitor: DefaultVisitor
+
+  - path: /updater
+    methods: [GET, POST]
+    agent_dir: ../examples/prompt_refiner
+    workflow:
+       UpdaterAgent : []
+    visitor: DefaultVisitor
+
+  - path: /automation
+    methods: [GET, POST]
+    agent_dir: ./automation
+    visitor: DefaultVisitor
+

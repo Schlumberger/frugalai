@@ -1,0 +1,7 @@
+{
+  "name": "UpdaterAgent",
+  "description": "Propose an update to a system prompt, given a critique from the Critic Agent.",
+  "system_prompt_file" : "updater_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 1000
+}

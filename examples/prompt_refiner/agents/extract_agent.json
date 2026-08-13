@@ -1,0 +1,8 @@
+{
+  "name": "ExtractAgent",
+  "type" : "plugins/agents.py",
+  "description": "Extracts the initial file structure for a complete DAG execution graph.",
+  "system_prompt" : "REPLACED BY CODE",   
+  "temperature": 0.7,
+  "max_tokens": 1000
+}

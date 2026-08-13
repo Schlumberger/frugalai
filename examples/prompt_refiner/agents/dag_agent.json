@@ -1,0 +1,7 @@
+{
+  "name": "DAGAgent",
+  "description": "Decomposing complex user goals into structured, Directed Acyclic Graph (DAG) execution plans.",
+  "system_prompt_file" : "DAG_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 1000
+}

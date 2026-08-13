@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Computation Graph</title>
+    <!-- script src="{{ url_for('static', filename='js/viz.js') }}"></script -->
+<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/viz.js') }}"></script>
+<script src="{{ url_for('static', filename='js/site.js') }}"></script>
+
+    <!-- script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script -->
+    <style>
+html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden; /* optional: prevents scrollbars */
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    overflow: auto; /* allows scrolling */
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* keeps aspect ratio */
+}    </style>
+</head>
+<body>
+
+    <div class="container" id="svg-container-1">
+    </div>
+<script>
+    const originalDot = {{ original_graph | tojson }};
+    const originalSVG = Viz(originalDot, "svg");
+
+    const container = document.getElementById('svg-container-1');
+    container.innerHTML = originalSVG;
+
+    const svg = container.querySelector("svg");
+
+    // Convert fixed size → responsive
+    const width = svg.getAttribute("width");
+    const height = svg.getAttribute("height");
+
+    svg.setAttribute("viewBox", `0 0 ${parseFloat(width)} ${parseFloat(height)}`);
+    svg.removeAttribute("width");
+    svg.removeAttribute("height");
+</script>
+</body>
+</html>

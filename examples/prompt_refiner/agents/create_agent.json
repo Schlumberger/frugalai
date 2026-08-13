@@ -1,0 +1,7 @@
+{
+  "name": "CreateAgent",
+  "description": "Constructs high-quality, production-grade system prompts that are clear and enforceable.",
+  "system_prompt_file" : "create_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 1000
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prompt</title>
+    <script type="module" src="{{ url_for('static', filename='js/md-block.js') }}"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        textarea { width: 100%; height: 150px; }
+        .response, .provenance { margin-top: 20px; padding: 15px; border-radius: 8px; }
+        .response { background: #f4f4f4; }
+        .provenance { background: #e8f0fe; }
+        img { max-width: 600px; margin-top: 10px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; font-size: 16px; }
+        h1, h2, h3 { color: #333; }
+        pre { background: #eee; padding: 10px; border-radius: 5px; }
+        code { font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>Prompt Interface  <a href="/">Home</a></h1>
+    <form method="POST">
+        <label for="prompt">{{ preprompt | safe }}</label><br>
+        <textarea name="prompt" id="prompt" required></textarea><br><br>
+        <button type="submit">Submit</button>
+    </form>
+    {% if response %}
+    <div class="response">
+        <h2>Response:</h2>
+        {{ response|safe }}
+        {% if image %}
+        <h3>Heatmap Image:</h3>
+        <img src="data:image/png;base64,{{ image }}" alt="heatmap" />
+        {% endif %}
+    </div>
+    {% endif %}
+    {% if provenance %}
+    <div class="provenance">
+        <h2>Provenance:</h2>
+        <ul>
+        {% for entry in provenance %}
+            <li><strong>{{ entry.timestamp }}</strong>: {{ entry.server }} - {{ entry.function }} (Params: {{ entry.params }})</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</body>
+</html>
