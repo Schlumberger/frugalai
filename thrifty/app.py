@@ -10,14 +10,6 @@ from frugal.visitors import VISITOR_REGISTRY
 from frugal.resumable_registry import ResumableRegistry
 from frugal.resilient_registry import ResilientRegistry
 
-##class HITLResponse:
-##    def __init__(self, state_id, node):
-##        self.state_id = state_id
-##        self.node = node
-##
-##    def __str__(self):
-##        return ""  # ensure engine doesn't break
-
 def safe_serialize(obj):
     # Try common patterns vendors use
     if hasattr(obj, "model_dump"):   # pydantic v2
@@ -167,6 +159,7 @@ def build_app(app,client,registry,
                         "reason",
                         "failure"
                     )
+                    print(reason)
                     if reason == "competency":
 
                         return f"""
@@ -424,8 +417,7 @@ if __name__ == "__main__":
         creds = getLLM()
         if creds is None:
             client = FailingClient()
-            use_failing=True
-            
+            use_failing=True            
         else:
             client = AzureOpenAIClient(getLLM())
 

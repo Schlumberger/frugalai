@@ -179,7 +179,7 @@ class ResilientRegistry(ResumableRegistry):
         self.interrupt = {"reason": "competency", "state_id": sid, "node": agent_name,
                           "score": score, "failed_input": input_text}
 
-    def _before_agent_execution(self, agent_name, input_text):
+    def before_agent_execution(self, agent_name, input_text):
         task = self.get_task_profile(agent_name)
         state = self.get_user_state(agent_name)
 

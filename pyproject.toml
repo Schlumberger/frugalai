@@ -40,8 +40,10 @@ Repository = "https://github.com/Schlumberger/frugalai"
 
 [tool.setuptools]
 zip-safe = false
-packages = { find = {} }
 include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["frugal*"]
 
 [tool.setuptools.dynamic]
 version = { attr = "frugal.__version__" }

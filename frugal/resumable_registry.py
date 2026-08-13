@@ -20,6 +20,12 @@ class ResumableRegistry:
         agent = self.base.get(name)
         return ResumableAgentWrapper(agent, name, self)
 
+    def before_agent_execution(self, agent_name, input_text):
+        print("before agent exection")
+        # overridable behaviour for subclasses
+        return None    
+
+
     # ----------------------------------
     # State persistence
     # ----------------------------------
@@ -54,16 +60,12 @@ class ResumableAgentWrapper:
     def get_token_usage(self):
         return self.agent.get_token_usage()
 
-    def _before_agent_execution(self, agent_name, input_text):
-        # overridable behaviour for subclasses
-        return None    
-
     def prompt(self, input_text):
         print(f"[WRAPPER] Executing agent: {self.name}")
         system_prompt = self.agent.system_prompt # store it
 
         try:
-            #if True:
+            # if True:
             state = self.registry.state
 
             # SAFELY access state
@@ -106,6 +108,7 @@ class ResumableAgentWrapper:
                     return ""
                 
                 response = self.agent.prompt(input_text)
+                print(response)
 
                 return response
 
@@ -155,3 +158,4 @@ class ResumableAgentWrapper:
                 }
 
             return ""
+
