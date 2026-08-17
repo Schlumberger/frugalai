@@ -1,0 +1,8 @@
+
+{
+  "name": "ClassDesignAgent",
+  "description": "Generates class specifications and outlines responsibilities based on decomposed pattern roles.",
+  "system_prompt_file" : "ClassDesign_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

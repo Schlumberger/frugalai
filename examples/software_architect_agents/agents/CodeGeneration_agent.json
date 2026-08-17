@@ -1,0 +1,9 @@
+
+{
+  "name": "CodeGenerationAgent",
+  "type" : "plugins/agents.py",
+  "description": "Produces idiomatic, complete object-oriented Python code implementing the specified patterns and wiring.",
+  "system_prompt_file" : "CodeGeneration_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

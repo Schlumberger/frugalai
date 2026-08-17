@@ -1,0 +1,8 @@
+
+{
+  "name": "PatternDecompositionAgent",
+  "description": "Breaks down each selected design pattern into its constituent roles and relationships.",
+  "system_prompt_file" : "PatternDecomposition_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

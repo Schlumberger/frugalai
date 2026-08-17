@@ -1,0 +1,8 @@
+
+{
+  "name": "RequirementExtractionAgent",
+  "description": "Extracts and clarifies the core functional and non-functional requirements from the user prompt.",
+  "system_prompt_file" : "RequirementExtraction_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

@@ -1,0 +1,8 @@
+
+{
+  "name": "TestCaseAgent",
+  "description": "Generates unit tests to validate the correct behavior of each implemented design pattern component.",
+  "system_prompt_file" : "TestCase_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

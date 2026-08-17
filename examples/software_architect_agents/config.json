@@ -1,0 +1,6 @@
+{
+ "RequirementExtractionAgent": [], 
+ "PatternSelectionAgent": ["RequirementExtractionAgent"], 
+ "ClassDesignAgent": ["RequirementExtractionAgent","PatternSelectionAgent"], 
+ "CodeGenerationAgent": ["ClassDesignAgent"]
+}

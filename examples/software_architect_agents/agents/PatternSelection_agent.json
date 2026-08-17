@@ -1,0 +1,8 @@
+
+{
+  "name": "PatternSelectionAgent",
+  "description": "Identifies suitable Gang-of-Four design patterns that address the extracted requirements.",
+  "system_prompt_file" : "PatternSelection_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}
