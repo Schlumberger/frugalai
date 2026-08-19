@@ -1,6 +1,6 @@
 # frugalai
 
-A minimal python module for AI-enabled workflow automation, which encourages cost discipline efficient model use through repeatable routing and lightweight abstractions for building reliable, scalable calculation graphs.
+A minimal python module for AI-enabled workflow automation, which encourages cost discipline and efficient model use through repeatable routing and lightweight abstractions for building reliable, scalable calculation graphs.
 
 Whether automating the boring repetitive tasks, or dreaming of 10x productivity gains, it is hard to ignore the impact of the LLM-based agentic workflow.
 
