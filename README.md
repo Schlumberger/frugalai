@@ -19,6 +19,6 @@ The **thrifty** example application offers no-code development of workflows desi
 
 The [examples](https://github.com/Schlumberger/frugalai/tree/main/examples) show what we have built, and we welcome contributions! We also welcome contributors to the core **frugal** library, noting that the priority is to keep everything small enough to read and learn from.
 
-If you want to learn about the principles and some practical tips on how to build "agentic" workflows all the way to deployment without any specialized modules, and even if you don't have a specific subscription to a vendor - why not try our [tutorial](https://github.com/Schlumberger/frugalai/wiki/The-Code-Architect-%E2%80%90-Part-1)?
+If you want to learn about the principles and some practical tips on how to build "agentic" workflows all the way to deployment without any specialized modules, and even if you don't have a specific subscription to a vendor - why not try our [tutorial](https://github.com/Schlumberger/frugalai/wiki/Tutorial-Part-1-%E2%80%90-Generation-of-a-Plan)?
 
 
