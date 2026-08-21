@@ -1,0 +1,18 @@
+routes:
+  - path: /physics-elicit
+    methods: [GET, POST]
+    agent_dir: ../examples/physics_agents
+    workflow:
+      IntentAgent: []
+    visitor: DefaultVisitor
+
+  - path: /physics
+    methods: [GET, POST]
+    agent_dir: ../examples/physics_agents
+    visitor: StyleVisitor
+    visitor_args:
+      agent_dir: ../examples/style_agents
+
+
+
+

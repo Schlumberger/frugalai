@@ -1,0 +1,7 @@
+{
+  "name": "ClassifierAgent",
+  "description": "Identifies, classifies, and ranks the relevant branches of physics governing the system described.",
+  "system_prompt_file" : "classifier_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 10000
+}

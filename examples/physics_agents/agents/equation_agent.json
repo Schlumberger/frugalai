@@ -1,0 +1,7 @@
+{
+  "name": "EquationAgent",
+  "description": "identifyies the governing laws, constitutive relations, and—where unavoidable—empirical correlations",
+  "system_prompt_file" : "equation_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

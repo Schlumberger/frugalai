@@ -1,0 +1,7 @@
+{
+  "name": "FramingAgent",
+  "description": "Synthesizes physics dominance, admissibility constraints, system structure, and value intent into physically admissible opportunity units",
+  "system_prompt_file" : "framing_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

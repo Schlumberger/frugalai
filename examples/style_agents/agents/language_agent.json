@@ -1,0 +1,9 @@
+{
+  "name": "LanguageAgent",
+  "description": "Adopts typical corporate language style.",
+  "system_prompt_file" : "language_prompt.txt",
+  "aux_file" : "LANGUAGE.md",
+  "user_prompt_file" : "language_user_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

@@ -1,0 +1,16 @@
+{ 
+  "IntentAgent" : [],
+  "ClassifierAgent" : ["IntentAgent"],
+  "PartitionerAgent" : ["IntentAgent","ClassifierAgent"],
+  "EquationAgent" : ["IntentAgent","ClassifierAgent","PartitionerAgent"],
+  "DimensionlessAgent" : ["EquationAgent", "PartitionerAgent", "IntentAgent", "ClassifierAgent"],
+  "AdmissibilityAgent" : ["EquationAgent", "ClassifierAgent", "PartitionerAgent", "DimensionlessAgent"],
+  "FramingAgent" : ["DimensionlessAgent", "AdmissibilityAgent","PartitionerAgent","IntentAgent"],
+  "LeverageAgent" : ["FramingAgent", "AdmissibilityAgent", "IntentAgent"],
+  "ConstitutiveClosureAgent" : ["EquationAgent", "AdmissibilityAgent", "PartitionerAgent", "DimensionlessAgent", "IntentAgent"],
+  "ChemistryAndMaterialsAgent" : ["ConstitutiveClosureAgent","IntentAgent"],
+  "LimitsAgent" : ["EquationAgent", "DimensionlessAgent", "AdmissibilityAgent", "PartitionerAgent", "IntentAgent"],
+  "CausalSummaryAgent" : ["IntentAgent","PartitionerAgent","EquationAgent","DimensionlessAgent"],
+  "CredibilityAgent" : ["LimitsAgent","AdmissibilityAgent","ChemistryAndMaterialsAgent","IntentAgent"],
+  "ReportAgent" : ["CausalSummaryAgent", "CredibilityAgent","IntentAgent"]
+}

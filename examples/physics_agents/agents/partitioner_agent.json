@@ -1,0 +1,7 @@
+{
+  "name": "PartitionerAgent",
+  "description": "Decomposes the physical system into coupled subsystems and closed loops, identifying how energy, mass, and information flow and interaction across scales.",
+  "system_prompt_file" : "partitioner_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

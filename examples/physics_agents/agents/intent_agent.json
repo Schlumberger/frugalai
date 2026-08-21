@@ -1,0 +1,7 @@
+{
+  "name": "IntentAgent",
+  "description": "Transforms an informal, narrative, or ambiguous user query into a well‑posed scientific problem statement, grounded in physics",
+  "system_prompt_file" : "intent_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 10000
+}

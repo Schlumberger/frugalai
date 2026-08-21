@@ -1,0 +1,7 @@
+{
+  "name": "ConstitutiveClosureAgent",
+  "description": "identifies, consolidates, and prioritizes all constitutive closures in the physics description",
+  "system_prompt_file" : "constitutive_closure_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

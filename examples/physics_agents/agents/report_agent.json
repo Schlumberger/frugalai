@@ -1,0 +1,7 @@
+{
+  "name": "ReportAgent",
+  "description": "produces a scientifically grounded explanation that communicates how the system works, what matters most, what can be done, and where the explanation stops.",
+  "system_prompt_file" : "report_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

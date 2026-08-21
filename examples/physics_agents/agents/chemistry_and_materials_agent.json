@@ -1,0 +1,7 @@
+{
+  "name": "ChemistryAndMaterialsAgent",
+  "description": "Explicitly defines the boundary and interface where chemistry or materials science models must take over.",
+  "system_prompt_file" : "chemistry_and_materials_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

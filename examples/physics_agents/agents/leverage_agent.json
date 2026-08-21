@@ -1,0 +1,7 @@
+{
+  "name": "LeverageAgent",
+  "description": "Translates physics‑validated leverage into concrete, technically meaningful intervention options.",
+  "system_prompt_file" : "leverage_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

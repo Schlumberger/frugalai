@@ -1,0 +1,7 @@
+{
+  "name": "DimensionlessAgent",
+  "description": "non‑dimensionalizes the governing equations, extracts key dimensionless numbers, and ranks competing mechanisms",
+  "system_prompt_file" : "dimensionless_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

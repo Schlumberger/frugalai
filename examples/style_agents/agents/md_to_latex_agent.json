@@ -1,0 +1,8 @@
+{
+  "name": "MD2LaTeXAgent",
+  "type" : "plugins/agents.py",
+  "description": "convert complex Markdown to publication quality LaTeX.",
+  "system_prompt_file" : "md_to_latex_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}
