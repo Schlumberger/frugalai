@@ -50,5 +50,5 @@ routes:
   - path: /vehicle
     methods: [GET, POST]
     agent_dir: ../examples/coding/vehicle_agents
-    visitor: DefaultVisitor
+    visitor: ExportVisitor
 
