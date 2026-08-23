@@ -1,0 +1,7 @@
+{
+  "name": "GSS2CSPAgent",
+  "description": "From a Generator Semantic Specification (GSS) in YAML to a fully specified constraint program (CSP).",
+  "system_prompt_file" : "gss2csp_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

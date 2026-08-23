@@ -1,0 +1,7 @@
+{
+  "name": "EncodingAgent",
+  "description": "translates a formally defined multiobjective optimisation problem into an executable pymoo Problem class.",
+  "system_prompt_file" : "encoding_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

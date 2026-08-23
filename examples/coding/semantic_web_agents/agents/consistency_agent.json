@@ -1,0 +1,7 @@
+{
+  "name": "ConsistencyAgent",
+  "description": "Ensures that an ontology is logically consistent, contradiction-free, and compatible with OWL reasoning.",
+  "system_prompt_file" : "consistency_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 1000
+}

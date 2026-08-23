@@ -1,0 +1,7 @@
+{
+  "name": "FormulationAgent",
+  "description": "translates a validated optimisation problem specification into a precise mathematical multiobjective optimisation formulation.",
+  "system_prompt_file" : "formulation_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

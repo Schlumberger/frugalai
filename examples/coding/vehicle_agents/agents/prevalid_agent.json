@@ -1,0 +1,7 @@
+{
+  "name": "PrevalidAgent",
+  "description": "Takes artifacts generated across the pipeline and produces a structured, aligned validation package that is optimized for consistency checking.",
+  "system_prompt_file" : "prevalid_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

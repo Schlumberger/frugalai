@@ -80,7 +80,7 @@ class AzureOpenAIClient(Client):
             max_tokens=max_tokens,
             messages=messages
             )
-        print(response)
+        # print(response)
         return response
 
 

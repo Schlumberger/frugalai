@@ -1,0 +1,8 @@
+
+{
+  "name": "ProblemElicitationAgent",
+  "description": "Clarifies the planning problem by eliciting objectives, relevant entities, and contextual constraints from the user.",
+  "system_prompt_file" : "ProblemElicitation_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

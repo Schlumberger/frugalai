@@ -1,0 +1,8 @@
+
+{
+  "name": "ActionSchemaAgent",
+  "description": "Designs explicit PDDL action schemas with well-defined preconditions and effects based on domain predicates, invariants, and resource models.",
+  "system_prompt_file" : "ActionSchema_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

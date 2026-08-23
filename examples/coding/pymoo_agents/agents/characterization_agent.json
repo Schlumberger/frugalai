@@ -1,0 +1,7 @@
+{
+  "name": "CharacterizationAgent",
+  "description": "Interprets output of the ElicitationAgent, converting into an algorithm‑facing characterisation.",
+  "system_prompt_file" : "characterization_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

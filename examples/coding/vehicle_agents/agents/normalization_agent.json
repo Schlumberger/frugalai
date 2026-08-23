@@ -1,0 +1,7 @@
+{
+  "name": "NormalizationAgent",
+  "description": "Transforms a structured natural language specification into a canonical, unambiguous intermediate representation.",
+  "system_prompt_file" : "normalization_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

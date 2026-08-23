@@ -1,0 +1,8 @@
+
+{
+  "name": "ProblemInstanceAgent",
+  "description": "Generates concrete planning problem instances with initial state and objects matching the symbolic domain and goals.",
+  "system_prompt_file" : "ProblemInstance_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

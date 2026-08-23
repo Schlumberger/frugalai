@@ -1,0 +1,7 @@
+{
+  "name": "SPARQLAgent",
+  "description": "Produces a system prompt for a prompt-to-SPARQL agent.",
+  "system_prompt_file" : "sparql_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 10000
+}

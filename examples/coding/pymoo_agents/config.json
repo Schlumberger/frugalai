@@ -1,0 +1,10 @@
+{ 
+  "ElicitationAgent" : [],
+  "ValidationAgent" : ["ElicitationAgent"],
+  "FormulationAgent" : ["ElicitationAgent"],
+  "EncodingAgent" : ["FormulationAgent","ElicitationAgent"],
+  "CharacterizationAgent" : ["ElicitationAgent"],
+  "SelectionAgent" : ["CharacterizationAgent","FormulationAgent"],
+  "ExtractionAgent" : ["ElicitationAgent"],
+  "ExperimentDesignAgent" : ["SelectionAgent","CharacterizationAgent","ExtractionAgent"]
+}

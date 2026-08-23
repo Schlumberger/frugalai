@@ -1,0 +1,15 @@
+{
+ "AssertionAgent" : [],
+ "CanonicalizationAgent" : ["AssertionAgent"],
+ "IdentityResolutionAgent" : ["CanonicalizationAgent"],
+ "TaxonomyAgent" : ["IdentityResolutionAgent"],
+ "ExtractionAgent" : ["TaxonomyAgent"],
+ "ConsistencyAgent" : ["IdentityResolutionAgent","TaxonomyAgent","ExtractionAgent"],
+ "AxiomAgent" : ["AssertionAgent","TaxonomyAgent","ExtractionAgent", "IdentityResolutionAgent","ConsistencyAgent"],
+ "CQAgent" : ["AssertionAgent","TaxonomyAgent","ExtractionAgent", "IdentityResolutionAgent","AxiomAgent","ConsistencyAgent"],
+ "SHACLAgent" : ["AssertionAgent","TaxonomyAgent","ExtractionAgent", "IdentityResolutionAgent","AxiomAgent","ConsistencyAgent"],
+ "gUFOSerializationAgent" : ["IdentityResolutionAgent","TaxonomyAgent",
+                         "ExtractionAgent","AxiomAgent","AssertionAgent",
+                         "ConsistencyAgent","SHACLAgent"],
+ "SPARQLAgent" : ["AssertionAgent", "CQAgent", "IdentityResolutionAgent", "SHACLAgent","gUFOSerializationAgent"]
+}

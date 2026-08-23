@@ -1,0 +1,7 @@
+{
+  "name": "ExtractionAgent",
+  "description": "Transforms implicit defining characteristics ([[C]] clauses from Aristotelian sentences) into explicit ontology properties.",
+  "system_prompt_file" : "extraction_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 1000
+}

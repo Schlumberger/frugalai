@@ -1,0 +1,7 @@
+{
+  "name": "IdentityResolutionAgent",
+  "description": "Ensures that each term refers to one and only one concept, and that each concept is uniquely and consistently represented.",
+  "system_prompt_file" : "identity_resolution_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 1000
+}

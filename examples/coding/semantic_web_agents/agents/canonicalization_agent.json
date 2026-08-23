@@ -1,0 +1,7 @@
+{
+  "name": "CanonicalizationAgent",
+  "description": "Extracts, normalizes, and canonicalizes all terms appearing in the form [[A]], [[B]], and [[C]] across a set of input sentences and questions.",
+  "system_prompt_file" : "canonicalization_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 1000
+}

@@ -1,0 +1,6 @@
+{
+  "CSPElicitationAgent" : [],
+  "InvariantGeneratorAgent" : ["CSPElicitationAgent"],
+  "GSS2CSPAgent" : ["InvariantGeneratorAgent"],
+  "MiniZINCAgent" : ["GSS2CSPAgent"] 
+}

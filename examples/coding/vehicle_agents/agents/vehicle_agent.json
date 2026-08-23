@@ -1,0 +1,7 @@
+{
+  "name": "VehicleAgent",
+  "description": "Translates a VEHICLE-compatible intermediate representation into a fully executable VEHICLE program.",
+  "system_prompt_file" : "vehicle_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

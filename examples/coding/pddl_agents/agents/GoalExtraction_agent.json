@@ -1,0 +1,8 @@
+
+{
+  "name": "GoalExtractionAgent",
+  "description": "Identifies and formalizes the desired goal states from the elicited problem description.",
+  "system_prompt_file" : "GoalExtraction_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

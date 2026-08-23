@@ -1,0 +1,7 @@
+{
+  "name": "CQAgent",
+  "description": "Generates competency questions that test whether an ontology can answer meaningful, real-world, concept-based questions.",
+  "system_prompt_file" : "cq_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 10000
+}

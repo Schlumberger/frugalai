@@ -1,0 +1,8 @@
+
+{
+  "name": "ActionValidationAgent",
+  "description": "Checks that all action schemas are consistent, have clear producers and consumers for all predicates, and do not generate unreachable or inconsistent states.",
+  "system_prompt_file" : "ActionValidation_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

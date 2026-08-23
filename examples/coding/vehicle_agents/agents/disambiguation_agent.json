@@ -1,0 +1,7 @@
+{
+  "name": "DisambiguationAgent",
+  "description": "Converts a normalized logical specification into a fully disambiguated, internally consistent logical specification.",
+  "system_prompt_file" : "disambiguation_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

@@ -1,0 +1,8 @@
+
+{
+  "name": "DomainOptimizationAgent",
+  "description": "Suggests and applies abstraction, simplification, or refactoring opportunities to improve computational tractability and reduce grounding complexity.",
+  "system_prompt_file" : "DomainOptimization_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

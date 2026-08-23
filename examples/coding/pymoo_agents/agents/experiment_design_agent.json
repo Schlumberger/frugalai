@@ -1,0 +1,7 @@
+{
+  "name": "ExperimentDesignAgent",
+  "description": "defines a reproducible and well‑structured experimental plan.",
+  "system_prompt_file" : "experiment_design_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

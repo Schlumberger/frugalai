@@ -1,0 +1,7 @@
+{
+  "name": "FormalizationAgent",
+  "description": "Translates a fully disambiguated logical specification into a structured, VEHICLE-compatible intermediate representation.",
+  "system_prompt_file" : "formalization_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

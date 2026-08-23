@@ -1,0 +1,7 @@
+{
+  "name": "TaxonomyAgent",
+  "description": "builds a strict, logically consistent taxonomy.",
+  "system_prompt_file" : "taxonomy_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 1000
+}

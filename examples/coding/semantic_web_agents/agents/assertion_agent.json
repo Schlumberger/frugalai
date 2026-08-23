@@ -1,0 +1,7 @@
+{
+  "name": "AssertionAgent",
+  "description": "Generates and validate atomic sentences that describe concepts with absolute clarity and logical correctness.",
+  "system_prompt_file" : "assertion_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 1000
+}

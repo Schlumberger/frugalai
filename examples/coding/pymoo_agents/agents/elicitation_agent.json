@@ -1,0 +1,7 @@
+{
+  "name": "ElicitationAgent",
+  "description": "elicit, structure, and formalise a multi-objective optimisation problem.",
+  "system_prompt_file" : "elicitation_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

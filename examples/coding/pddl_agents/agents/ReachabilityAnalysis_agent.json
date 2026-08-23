@@ -1,0 +1,8 @@
+
+{
+  "name": "ReachabilityAnalysisAgent",
+  "description": "Analyzes whether the defined actions and initial state can reach the specified goals, flagging dead-ends or inefficiencies.",
+  "system_prompt_file" : "ReachabilityAnalysis_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

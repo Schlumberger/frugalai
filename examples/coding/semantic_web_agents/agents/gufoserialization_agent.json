@@ -1,0 +1,7 @@
+{
+  "name": "gUFOSerializationAgent",
+  "description": "Converts a fully defined semantic model into deployable gUFO ontology format.",
+  "system_prompt_file" : "gufoserialization_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 10000
+}

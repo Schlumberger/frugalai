@@ -1,0 +1,7 @@
+{
+  "name": "InvariantGeneratorAgent",
+  "description": "From structured input about a domain, creates a Generator Semantic Specification (GSS).",
+  "system_prompt_file" : "invariant_generator_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

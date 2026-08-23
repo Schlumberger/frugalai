@@ -1,0 +1,7 @@
+{
+  "name": "SelectionAgent",
+  "description": "recommends an appropriate multiobjective evolutionary algorithm and its configuration.",
+  "system_prompt_file" : "selection_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

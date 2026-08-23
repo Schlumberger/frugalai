@@ -1,0 +1,7 @@
+{
+  "name": "ValidationAgent",
+  "description": "reviews a fully elicited optimisation problem specification.",
+  "system_prompt_file" : "validation_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

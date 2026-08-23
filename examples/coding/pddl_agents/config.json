@@ -1,0 +1,13 @@
+{
+  "ProblemElicitationAgent" : [],
+  "GoalExtractionAgent" : ["ProblemElicitationAgent"],
+  "PredicateAndTypeAgent" : ["ProblemElicitationAgent", "GoalExtractionAgent"],
+  "ProblemInstanceAgent" : ["GoalExtractionAgent", "PredicateAndTypeAgent"],
+  "ResourceModelAgent" : ["PredicateAndTypeAgent"],
+  "InvariantAnalysisAgent" : ["PredicateAndTypeAgent"],
+  "ActionSchemaAgent" : ["PredicateAndTypeAgent", "ResourceModelAgent", "InvariantAnalysisAgent"],
+  "ActionValidationAgent" : ["InvariantAnalysisAgent", "ActionSchemaAgent"],
+  "ReachabilityAnalysisAgent" : ["ActionValidationAgent"],
+  "DomainOptimizationAgent" : ["ReachabilityAnalysisAgent", "PredicateAndTypeAgent", "ProblemInstanceAgent", "ActionSchemaAgent"]
+}
+ 

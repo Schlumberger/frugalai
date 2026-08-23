@@ -1,0 +1,10 @@
+{
+  "ElicitationAgent" : [],
+  "SpecificationAgent" : ["ElicitationAgent"],
+  "NormalizationAgent" : ["SpecificationAgent"],
+  "DisambiguationAgent" : ["NormalizationAgent"],
+  "FormalizationAgent" : ["DisambiguationAgent"],
+  "VehicleAgent" : ["FormalizationAgent"],
+  "PrevalidAgent" : ["ElicitationAgent","DisambiguationAgent","FormalizationAgent","VehicleAgent"],
+  "ValidationAgent" : ["PrevalidAgent","VehicleAgent"]
+}

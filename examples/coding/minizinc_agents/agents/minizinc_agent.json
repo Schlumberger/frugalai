@@ -1,0 +1,7 @@
+{
+  "name": "MiniZINCAgent",
+  "description": "From a fully specified constraint program (CSP) to a runnable MiniZINC.",
+  "system_prompt_file" : "minizinc_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

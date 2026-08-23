@@ -1,0 +1,7 @@
+{
+  "name": "SHACLAgent",
+  "description": "Generates SHACL shapes that enforce data conformance to an ontology.",
+  "system_prompt_file" : "shacl_prompt.txt",
+  "temperature": 0.7,
+  "max_tokens": 10000
+}

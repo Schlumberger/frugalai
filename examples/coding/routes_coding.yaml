@@ -1,0 +1,54 @@
+routes:
+  - path: /classify
+    methods: [GET, POST]
+    agent_dir: ../examples/coding/pddl_agents
+    workflow:
+      StrategyAgent: []
+    visitor: DefaultVisitor
+
+  - path: /PDDL
+    methods: [GET, POST]
+    agent_dir: ../examples/coding/pddl_agents
+    visitor: ExportVisitor
+
+  - path: /scope_minizinc
+    methods: [GET, POST]
+    agent_dir: ../examples/coding/minizinc_agents
+    workflow:
+      CSPElicitationAgent : []
+    visitor: DefaultVisitor
+
+  - path: /minizinc
+    methods: [GET, POST]
+    agent_dir: ../examples/coding/minizinc_agents
+    visitor: ExportVisitor
+
+  - path: /scope_pymoo
+    methods: [GET, POST]
+    agent_dir: ../examples/coding/pymoo_agents
+    workflow:
+      ElicitationAgent : []
+    visitor: DefaultVisitor
+
+  - path: /pymoo
+    methods: [GET, POST]
+    agent_dir: ../examples/coding/pymoo_agents
+    visitor: DefaultVisitor
+
+  - path: /semantic-web
+    methods: [GET, POST]
+    agent_dir: ../examples/coding/semantic_web_agents
+    visitor: DefaultVisitor
+
+  - path: /vehicle-elicit
+    methods: [GET, POST]
+    agent_dir: ../examples/coding/vehicle_agents
+    workflow:
+      ElicitationAgent: []
+    visitor: DefaultVisitor
+
+  - path: /vehicle
+    methods: [GET, POST]
+    agent_dir: ../examples/coding/vehicle_agents
+    visitor: DefaultVisitor
+
