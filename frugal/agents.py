@@ -8,6 +8,14 @@ import importlib.util
 from pathlib import Path
 import tiktoken
 
+from dataclasses import dataclass
+
+# Used to decouple from openai library
+@dataclass
+class LLMResponse:
+    content: str
+    usage: object = None
+
 # helper for serialization
 def to_serializable(obj):
     # Base cases
@@ -52,6 +60,23 @@ class LLMFailed(Exception):
 
     def __str__(self):
         return f"{self.message} in {self.filename} at line {self.lineno}"
+
+# Helper exceptions - more for custom derived agents to
+#    indictate out-of-capability situations
+class WorkflowInterrupt(Exception):
+    """Base class for resumable workflow interruptions."""
+    pass
+
+
+class HumanInputRequired(WorkflowInterrupt):
+    def __init__(self, ui_spec):
+        self.ui_spec = ui_spec
+        super().__init__("Human input required")
+
+
+
+
+
 
 class Client(ABC):
     @abstractmethod
@@ -132,7 +157,7 @@ class BaseAgent:
 {self.to_dict()}
 ""","agents.py", 103)
 
-        reply = response.choices[0].message.content
+        reply = response.content
         
         self.token_counter.append(response.usage)
 

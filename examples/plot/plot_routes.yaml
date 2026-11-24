@@ -1,0 +1,45 @@
+routes:
+  - path: /begin_story
+    methods: [GET, POST]
+    agent_dir: ../examples/plot
+    workflow:
+      PremiseInterpretationAgent : [] 
+    visitor: DefaultVisitor
+    produces : 
+      story_state : PremiseInterpretationAgent
+
+  - path: /middle_story
+    methods: [GET, POST]
+    agent_dir: ../examples/plot
+    workflow:
+      IngestAgent : [story_state]
+      PoltiSituationAgent : [ IngestAgent ]
+      DramaticSituationSelectionAgent : [PoltiSituationAgent]
+      SituationTransitionAgent : [IngestAgent, DramaticSituationSelectionAgent]
+      ResolutionAssessmentAgent : [IngestAgent, SituationTransitionAgent]
+    visitor: DefaultVisitor
+    produces : 
+      story_state : SituationTransitionAgent
+
+  - path: /end_story
+    methods: [GET, POST]
+    agent_dir: ../examples/plot
+    workflow:
+      EndingAgent : [story_state]
+    visitor: DefaultVisitor
+
+decisions:
+  - step: /begin_story
+    options:
+      Continue:
+        path : /middle_story
+
+  - step: /middle_story
+    question: What next?
+    options:
+      Continue:
+        path : /middle_story
+      End:
+        path : /end_story
+
+

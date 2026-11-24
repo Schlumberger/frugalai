@@ -1,0 +1,9 @@
+
+{
+  "name": "DramaticSituationSelectionAgent",
+  "type" : "plugins/agents.py",
+  "description": "Read the paragraph and then select a dramatic situation from one of the 36 options.",
+  "system_prompt_file" : "DramaticSituationSelection_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}
