@@ -46,13 +46,11 @@ def create_route(spec_entry, registry, client, deployment, visitor_registry):
             **visitor_args
         )
 
-
-        # Handle empty prompt (moved out of engine)
         if not prompt:
             return {
                 "needs_prompt": True,
-                "result" : { "trace" : ""},
-                "tokens" : {},
+                "result": {"trace": ""},
+                "tokens": {},
                 "prompt": PromptService.DEFAULT_PROMPT
             }
 

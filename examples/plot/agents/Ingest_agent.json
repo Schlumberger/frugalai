@@ -1,0 +1,9 @@
+
+{
+  "name": "IngestAgent",
+  "type" : "plugins/agents.py",
+  "description": "Accepts a variable from another partial plan and carries it through this DAG.",
+  "system_prompt_file" : "Ingest_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

@@ -33,12 +33,19 @@ class AgenticWorkflowEngine:
         # Build graph
         G = nx.DiGraph()
 
+        # handle the decision structure
+        external_inputs = (self.registry.state.get("responses", {}))
+
         for node, deps in workflow.items():
             G.add_node(node)
             for dep in deps:
-                if dep not in workflow:
+                if dep in workflow:
+                    G.add_edge(dep, node)
+                elif dep in external_inputs:
+                    # artefact supplied by previous route
+                    pass
+                else:
                     raise ValueError(f"Unknown dependency '{dep}' for agent '{node}'")
-                G.add_edge(dep, node)  # dep → node
 
         # Validate DAG
         if not nx.is_directed_acyclic_graph(G):
@@ -57,14 +64,28 @@ class AgenticWorkflowEngine:
             deps = workflow[node]
 
             if deps:
-                input_text = "\n".join(response_list[d] for d in deps)
+                # updated to handle the external inputs which come in via the decisions
+                parts = []
+                for dep in deps:
+                    if dep in response_list:
+                        parts.append(response_list[dep])
+                    elif dep in external_inputs:
+                        parts.append(external_inputs[dep])
+                    else:
+                        raise ValueError(f"Unable to resolve dependency '{dep}'")
+                input_text = "\n".join(parts)
             else:
                 input_text = prompt
 
             try:
                 response = agent.prompt(input_text)      
             except:
-                raise RuntimeError(f"Agent '{node}' failed to respond.")
+                # Allow for richer exception landscape (for example
+                # the agent can throw the Frugal WorkflowInterrupt
+                # or HumanInputRequired exceptions.
+                # Here we delegate control over handling to the
+                # app that is using Frugal
+                raise
 
             token_use = agent.get_token_usage()
             token_tracker.extend(token_use)

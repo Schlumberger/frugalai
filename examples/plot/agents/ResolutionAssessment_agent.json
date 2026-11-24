@@ -1,0 +1,8 @@
+
+{
+  "name": "ResolutionAssessmentAgent",
+  "description": "Determines whether the protagonist's central internal and external state has reached meaningful resolution.",
+  "system_prompt_file" : "ResolutionAssessment_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

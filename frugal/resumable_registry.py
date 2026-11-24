@@ -6,6 +6,10 @@ import hashlib
 from datetime import datetime
 from pathlib import Path
 
+from frugal.agents import HumanInputRequired
+
+
+###############
 class ResumableRegistry:
     def __init__(self, base_registry):
         self.base = base_registry
@@ -103,16 +107,46 @@ class ResumableAgentWrapper:
             # NORMAL EXECUTION
             # ----------------------------------
             try:
-                action = self.registry.before_agent_execution(self.name, input_text)
+                action = self.registry.before_agent_execution(
+                    self.name,
+                    input_text
+                )
+
                 if action == "INTERRUPT":
                     return ""
-                
+
                 response = self.agent.prompt(input_text)
+
                 print(response)
+
+                # Persist successful completion
+                if state is not None:
+                    state.setdefault("responses", {})
+                    state["responses"][self.name] = response
 
                 return response
 
+            except HumanInputRequired as e:
+                workflow_state = {
+                    "current_node": self.name,
+                    "responses": responses,
+                    "human_response": None,
+                    "interrupt_reason": "ui"
+                }
+
+                sid = self.registry.save_state(workflow_state)
+
+                self.registry.interrupt = {
+                    "reason": "ui",
+                    "state_id": sid,
+                    "node": self.name,
+                    "ui_spec": e.ui_spec
+                }
+
+                return ""
+
             except Exception as e:
+
                 if not self.registry.interrupt:
 
                     workflow_state = {
@@ -123,12 +157,15 @@ class ResumableAgentWrapper:
                         "error": str(e)
                     }
 
-                    sid = self.registry.save_state(workflow_state)
+                    sid = self.registry.save_state(
+                        workflow_state
+                    )
 
                     self.registry.interrupt = {
                         "state_id": sid,
                         "node": self.name,
-                        "failed_input": f"{system_prompt}\n\n{input_text}",
+                        "failed_input":
+                            f"{system_prompt}\n\n{input_text}",
                         "error": str(e)
                     }
 

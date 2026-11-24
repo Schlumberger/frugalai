@@ -1,14 +1,26 @@
 import json
 import sys
 import os
+import yaml
 from flask import Flask, request, render_template, session
 
-from frugal.agents import Client
+# ---------------------------------------------------------
+# When run with the default routes.yaml, the app will allow
+#  the creation of orchestrated LLM-enabled workflows.
+# When run with your custom YAML, the app will execute your
+#  custom workflow.
+# NOTE: the goal is to only expose the minimum for human
+#   interaction with your backend designs.
+# ---------------------------------------------------------
+
+from frugal.agents import Client, LLMResponse
 from frugal.registry import AgentRegistry
 from frugal.routing import create_route, load_routes_from_yaml
 from frugal.visitors import VISITOR_REGISTRY
 from frugal.resumable_registry import ResumableRegistry
 from frugal.resilient_registry import ResilientRegistry
+# exceptions
+from frugal.agents import TooManyTokens, LLMFailed, WorkflowInterrupt, HumanInputRequired
 
 def safe_serialize(obj):
     # Try common patterns vendors use
@@ -45,24 +57,42 @@ app.secret_key = "dev-secret"
 # ----------------------------------
 
 def getLLM():
-    try:
-        from openai import AzureOpenAI
-    except:
-        return None
-    
     if not os.path.exists("./credfile.json"):
         return None
-    
-    with open("credfile.json") as f:
+
+    with open("./credfile.json") as f:
         credentials = json.load(f)
 
     cfg = credentials["default"]
 
-    return AzureOpenAI(
-        api_version=cfg['api_version'],
-        azure_endpoint=cfg['endpoint'],
-        api_key=cfg['credential']
-    )
+    provider = cfg.get("provider", "azure")
+
+    if provider == "azure":
+        try:
+            from openai import AzureOpenAI
+        except ImportError:
+            return None, False
+
+        return AzureOpenAI(
+            api_version=cfg["api_version"],
+            azure_endpoint=cfg["endpoint"],
+            api_key=cfg["credential"]
+        ), False  # no need to stream a
+
+    elif provider == "local-openai":
+        # --deployment qwen3.6-colibri
+        try:
+            from openai import OpenAI
+        except ImportError:
+            return None
+
+        return OpenAI(
+            base_url=cfg["base_url"],
+            api_key=cfg.get("api_key", "dummy"),
+            timeout = 1800.0
+        ), True # stream because local hosting can be slow
+
+    return None, False
 
 
 
@@ -71,17 +101,56 @@ def getLLM():
 # ----------------------------------
 class AzureOpenAIClient(Client):
     def __init__(self, client):
-        self.client = client
+        self.client = client[0]
+        self.stream = client[1]
 
-    def chat(self, model=None, temperature=None, max_tokens=None, messages=None):
-        response =  self.client.chat.completions.create(
+    def chat(
+        self,
+        model=None,
+        temperature=None,
+        max_tokens=None,
+        messages=None
+    ):
+
+        if not self.stream:
+            response =  self.client.chat.completions.create(
+                model=model,
+                temperature=temperature,
+                max_tokens=max_tokens,
+                messages=messages
+                )
+            return LLMResponse(
+                content=response.choices[0].message.content,
+                usage=response.usage)
+
+        print(f"{model=}, {temperature=}, {max_tokens=}")
+        stream = self.client.chat.completions.create(
             model=model,
             temperature=temperature,
             max_tokens=max_tokens,
-            messages=messages
-            )
-        # print(response)
-        return response
+            messages=messages,
+            stream=True,
+            timeout=3600.0,
+        )
+
+        parts = []
+
+        for chunk in stream:
+            print(".", end="", flush=True)  # heartbeat
+
+            if not chunk.choices:
+                continue
+
+            delta = chunk.choices[0].delta.content
+
+            if delta:
+                print(delta, end="", flush=True)
+                parts.append(delta)
+
+        print()
+        response_text = "".join(parts)
+        usage = 0
+        return LLMResponse(content="".join(parts),usage=usage)
 
 
 class FailingClient(Client):
@@ -90,11 +159,113 @@ class FailingClient(Client):
 
 
 
-ROUTES = None
 
+ROUTES = None
+DECISIONS = {}
+
+# set_routes - expanded to handle routes and decisions
+# NOTE: existing cases will run as before with DECISIONS = {}
 def set_routes(config_file):
     global ROUTES
+    global DECISIONS
+
     ROUTES = load_routes_from_yaml(config_file)
+
+    with open(config_file, "r", encoding="utf-8") as f:
+        cfg = yaml.safe_load(f)
+
+    DECISIONS = {}
+
+    for d in cfg.get("decisions", []):
+        step = d.get("step")
+        if step:
+            DECISIONS[step] = d
+
+# additional route helper, decisions can access paths
+def get_route_by_path(path):
+    global ROUTES
+
+    for route in ROUTES:
+        if route["path"] == path:
+            return route
+
+    return None
+
+###################################################################
+# basic UI components for UI tasks
+def render_single_select_table(interrupt):
+    sid = interrupt["state_id"]
+    ui = interrupt["ui_spec"]
+
+    title = ui.get("title", "Select Option")
+    paragraph = ui.get("paragraph", "")
+    columns = ui.get("columns", [])
+    rows = ui.get("rows", [])
+
+    html = f"""
+    <h2>{title}</h2>
+
+    <p>{paragraph}</p>
+
+    <form method="POST">
+
+        <input
+            type="hidden"
+            name="state_id"
+            value="{sid}"
+        >
+
+        <table border="1">
+            <tr>
+                <th>Select</th>
+    """
+    for col in columns:
+        html += f"<th>{col}</th>"
+    html += "</tr>"
+
+    for i, row in enumerate(rows):
+        html += f"""
+        <tr>
+            <td><input type="radio" name="selected_row" value="{i}" required></td>
+        """
+
+        for col in columns:
+            html += f"<td>{row.get(col, '')}</td>"
+
+        html += "</tr>"
+    html += f"""
+        </table>
+        <input type="hidden" name="response_json" value="" id="response_json">
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+    const rows = {json.dumps(rows)};
+    document.querySelector("form").addEventListener("submit", function() {{
+            const selected = document.querySelector('input[name="selected_row"]:checked');
+            if(selected) {{
+                document.getElementById("response_json").value =
+                    JSON.stringify(rows[parseInt(selected.value)]);
+            }}
+        }});
+    </script>
+    """
+    return html
+    
+def render_ui_interrupt(interrupt):
+    ui = interrupt["ui_spec"]
+    ui_type = ui.get("type")
+    if ui_type == "textarea":
+        return render_textarea_interrupt(interrupt)
+
+    if ui_type == "single_select_table":
+        return render_single_select_table(interrupt)
+
+    return f"""
+    <h2>Unknown UI Type</h2>
+    <pre>{json.dumps(ui, indent=4)}</pre>
+    """
 
 
 def build_app(app,client,registry,
@@ -129,37 +300,94 @@ def build_app(app,client,registry,
 
                 prompt = ""
                 state_id = None
+                human_response = None
+                from_decision = False
+
+                # Handle the case where we arrive from a decision point - no user prompt needed.
+                from_decision = ( request.args.get("from_decision", "").lower() == "true")
+                if from_decision:
+                    prompt = "__CONTINUE__"
 
                 if request.method == "POST":
-                    prompt = request.form.get("prompt", "")
                     state_id = request.form.get("state_id")
+                    # Structured UI response
+                    response_json = request.form.get("response_json")
+                    if response_json:
+                        try:
+                            human_response = str(json.loads(response_json)) # test for correct JSON...
+                        except Exception:
+                            print(f"Expected JSON, attempting to parse as string instead")
+                            human_response = response_json
+                        print(human_response)
+                        prompt = human_response
+                    else:
+                        # Existing textarea/manual response behaviour
+                        human_response = request.form.get( "prompt","")
+                        prompt = human_response
+                    from_dec = request.form.get("from_decision")
+                    print(f"{from_dec=}")
+                    if from_dec:
+                        from_decision = from_dec
 
+                # ----------------------------------
                 # RESUME path
+                # ----------------------------------
                 if state_id:
                     state = registry.load_state(state_id)
-                    state["human_response"] = prompt
+                    state["human_response"] = human_response
                     registry.state = state
                     registry.interrupt = None
-
                 else:
                     registry.state = {"responses": {}}
                     registry.interrupt = None
+    
+                # instantiate any decision artefacts
+                artifacts = session.get("workflow_artifacts",{})
+                registry.state["responses"].update(artifacts)
+                registry.state["from_decision"] = from_decision
 
                 # RUN ENGINE
-                result = handler(prompt)
+                try:
+                    result = handler(prompt)
+                except Exception as ex:
+                    if isinstance(ex, TooManyTokens) or isinstance(ex, LLMFailed):
+                        # in here we suggest the user restarts with the --use-resumable-registry option
+                        print(f"{type(ex).__name__}: Failing due to LLM, consider using the --use-resumable-registry option.")
+                    elif isinstance(ex, WorkflowInterrupt):
+                        print("WorkflowInterrupt: Agent can't handle case, failing to human prompt interface")
+                    elif isinstance(ex, HumanInputRequired):
+                        print("HumanInputRequired: Agent handling incomplete, attempting to interpret in human interface")
+                        print(ex)
+                    else:
+                        # general exception reporting
+                        # https://stackoverflow.com/questions/9823936/how-do-i-determine-what-type-of-exception-occurred
+                        template = "UNHANDLED: An exception of type {0} occurred.\nArguments:\n{1!r}"
+                        message = template.format(type(ex).__name__, ex.args)
+                        print(message)
+    
+                # Capture any outputs needed for decision routing
+                produces = route.get("produces", {})
+                if produces:
+                    session_artifacts = session.setdefault("workflow_artifacts",{})
+                    responses = result["result"].get("responses", {})
+                    for artifact_name, source_node in produces.items():
+                        if source_node in responses:
+                            session_artifacts[artifact_name] = responses[source_node]
+                    session["workflow_artifacts"] = session_artifacts
 
 
                 # ----------------------------------
                 # CHECK INTERRUPT
                 # ----------------------------------
                 if registry.interrupt:
-
                     intr = registry.interrupt
                     reason = intr.get(
                         "reason",
                         "failure"
                     )
                     print(reason)
+                    if reason == "ui":
+                        return render_ui_interrupt(intr)
                     if reason == "competency":
 
                         return f"""
@@ -201,6 +429,7 @@ def build_app(app,client,registry,
 
                         </form>
                         """
+                        
                     sid = intr["state_id"]
                     node = intr["node"]
                     failed_input = intr["failed_input"]
@@ -222,17 +451,45 @@ def build_app(app,client,registry,
 
                 # String summary for display use
                 token_use = json.dumps(result['tokens'], indent=4, default=safe_serialize)
+
+                # --- decision support
+                decision = DECISIONS.get(route["path"])
+                show_prompt=True
+                decision_html = ""
+                # This works for --use-failing-client, but what about when you are connected...
+                if (decision and "options" in decision) and (result.get('needs_prompt',True)==False):
+                    decision_html += (f"<h2>{decision.get('question', 'Next Step')}</h2>")
+                    for label, option in decision["options"].items():
+                        next_path = option["path"]
+                        decision_html += f"""
+                        <form action="{next_path}"
+                              method="GET"
+                              style="display:inline;">
+                             <input type="hidden" name="from_decision" value="true">
+                            <button type="submit">
+                                {label}
+                            </button>
+                        </form>
+                        """
+                    show_prompt = False 
                 
                 # ----------------------------------
                 # NORMAL RESULT
                 # ----------------------------------
                 return render_template(
-                    "prompt.html",
-                    preprompt=prompt,
-                    response=f"""
-    <pre>{token_use}</pre>
-    <md-block>{result['result']['trace']}</md-block>"""
-                )
+                        "prompt.html",
+                        show_prompt=show_prompt, # not ideal - hiding the prompt when decision is needed    
+                        preprompt=prompt,
+                        response=f"""
+                    <pre>{token_use}</pre>
+
+                    <md-block>
+                    {result['result']['trace']}
+                    </md-block>
+
+                    {decision_html}
+                    """
+                    )
 
             return flask_handler
 
@@ -253,6 +510,7 @@ def graph(name):
         endpoint_name = route.get("name") or route["path"].strip("/").replace("-", " ").title()
         if name==endpoint_name:
             workflow = route.get("workflow")
+            produces = route.get("produces", {})
             if workflow is None:
                 agent_dir = route.get("agent_dir",None)
                 if not os.path.exists(os.path.join(agent_dir,'config.json')):
@@ -289,13 +547,19 @@ def graph(name):
             """)
             
 
-            for node in workflow:
-               lines.append(f' {node};')
+            declared = set()
 
+            for node in workflow:
+                declared.add(node)
+                lines.append(f'"{node}";')
 
             for child, parents in workflow.items():
                 for parent in parents:
-                    lines.append(f'    {parent} -> {child};')
+                    if parent not in declared:
+                        declared.add(parent)
+                        lines.append(f'"{parent}" [shape=ellipse, fillcolor="#DFF4FF"];')
+                    lines.append(f'"{parent}" -> "{child}";')
+                    
 
             lines.append('}')
             dotgraph =  "\n".join(lines)
@@ -313,17 +577,38 @@ def graph(name):
 @app.route("/", methods=["GET"])
 def index():
     global ROUTES
+    global DECISIONS
 
     html = ["<h1>Available Workflows</h1>"]
 
+    decision_targets = set()
+
+    for d in DECISIONS.values():
+        for option in d.get("options", {}).values():
+            decision_targets.add(option["path"])
+
     for route in ROUTES:
         path = route["path"]
-        name = route.get("name") or path.strip("/").replace("-", " ").title()
 
-        html.append(f'<h2><a href="{path}">{name}</a></h2> <h3><a href="/graph/{name}">Graph of {name}</a></h3>')
+        # don't show routes that are only
+        # reachable from decisions
+        if path in decision_targets:
+            continue
+
+        name = (
+            route.get("name")
+            or path.strip("/")
+                  .replace("-", " ")
+                  .title()
+        )
+
+        html.append(
+            f'<h2><a href="{path}">{name}</a></h2>'
+            f' <h3><a href="/graph/{name}">'
+            f'Graph of {name}</a></h3>'
+        )
 
     return "\n".join(html)
-
 
 # ----------------------------------
 # Run
@@ -336,7 +621,7 @@ def parse_args():
     parser.add_argument(
         "--deployment",
         type=str,
-        default="gpt-4.1",
+        default="gpt-4.1", # qwen3.6-colibri
         help="Model deployment name"
     )
 
