@@ -107,48 +107,34 @@ class ResumableAgentWrapper:
             # NORMAL EXECUTION
             # ----------------------------------
             try:
-                action = self.registry.before_agent_execution(
-                    self.name,
-                    input_text
-                )
-
+                action = self.registry.before_agent_execution(self.name,input_text)
                 if action == "INTERRUPT":
                     return ""
-
                 response = self.agent.prompt(input_text)
-
-                print(response)
-
                 # Persist successful completion
                 if state is not None:
                     state.setdefault("responses", {})
                     state["responses"][self.name] = response
-
                 return response
 
-            except HumanInputRequired as e:
+            except HumanInputRequired as e: # Trigger from a custom agent - see examples/plot/plugins/agents.py
                 workflow_state = {
                     "current_node": self.name,
                     "responses": responses,
                     "human_response": None,
                     "interrupt_reason": "ui"
                 }
-
                 sid = self.registry.save_state(workflow_state)
-
                 self.registry.interrupt = {
                     "reason": "ui",
                     "state_id": sid,
                     "node": self.name,
                     "ui_spec": e.ui_spec
                 }
-
                 return ""
 
             except Exception as e:
-
                 if not self.registry.interrupt:
-
                     workflow_state = {
                         "current_node": self.name,
                         "responses": responses,
@@ -156,11 +142,7 @@ class ResumableAgentWrapper:
                         "failed_input": input_text,
                         "error": str(e)
                     }
-
-                    sid = self.registry.save_state(
-                        workflow_state
-                    )
-
+                    sid = self.registry.save_state(workflow_state)
                     self.registry.interrupt = {
                         "state_id": sid,
                         "node": self.name,
@@ -168,7 +150,6 @@ class ResumableAgentWrapper:
                             f"{system_prompt}\n\n{input_text}",
                         "error": str(e)
                     }
-
                 return ""
 
         # ABSOLUTE SAFETY NET
