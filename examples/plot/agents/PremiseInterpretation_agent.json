@@ -1,0 +1,8 @@
+
+{
+  "name": "PremiseInterpretationAgent",
+  "description": "Extracts the protagonist, situation, conflict seed, and implied narrative pressures from the user's premise.",
+  "system_prompt_file" : "PremiseInterpretation_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

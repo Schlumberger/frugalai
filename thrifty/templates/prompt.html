@@ -17,12 +17,15 @@
     </style>
 </head>
 <body>
+   {% if show_prompt %}
     <h1>Prompt Interface  <a href="/">Home</a></h1>
     <form method="POST">
         <label for="prompt">{{ preprompt | safe }}</label><br>
         <textarea name="prompt" id="prompt" required></textarea><br><br>
         <button type="submit">Submit</button>
     </form>
+    {% endif %}
+
     {% if response %}
     <div class="response">
         <h2>Response:</h2>

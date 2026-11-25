@@ -1,0 +1,8 @@
+
+{
+  "name": "SituationTransitionAgent",
+  "description": "Determines which Polti dramatic situation emerges from each available decision outcome.",
+  "system_prompt_file" : "SituationTransition_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

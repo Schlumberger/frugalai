@@ -1,0 +1,8 @@
+
+{
+  "name": "EndingAgent",
+  "description": "Produces a story ending once the protagonist's central state is resolved while allowing secondary elements to remain open if appropriate.",
+  "system_prompt_file" : "Ending_prompt.txt",   
+  "temperature": 0.7,
+  "max_tokens": 32000
+}

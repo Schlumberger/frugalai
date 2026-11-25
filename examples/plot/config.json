@@ -1,0 +1,6 @@
+{"PremiseInterpretationAgent": [], 
+ "PoltiSituationAgent": ["PremiseInterpretationAgent"], 
+ "SituationTransitionAgent": ["PremiseInterpretationAgent", "PoltiSituationAgent"],
+ "ResolutionAssessmentAgent" : ["PremiseInterpretationAgent", "SituationTransitionAgent"],
+ "EndingAgent" : ["SituationTransitionAgent" ]
+}
