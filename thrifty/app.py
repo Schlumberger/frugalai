@@ -347,17 +347,19 @@ def build_app(app,client,registry,
                 registry.state["from_decision"] = from_decision
 
                 # RUN ENGINE
+                result=None
                 try:
                     result = handler(prompt)
                 except Exception as ex:
                     if isinstance(ex, TooManyTokens) or isinstance(ex, LLMFailed):
                         # in here we suggest the user restarts with the --use-resumable-registry option
                         print(f"{type(ex).__name__}: Failing due to LLM, consider using the --use-resumable-registry option.")
+                    elif isinstance(ex, HumanInputRequired): # must be before its parent exception - the WorkflowInterrupt
+                        print("HumanInputRequired: Agent handling incomplete, attempting to interpret in human interface")
+                        print(f"Requires the use of the --use-resumable-registry option.")
                     elif isinstance(ex, WorkflowInterrupt):
                         print("WorkflowInterrupt: Agent can't handle case, failing to human prompt interface")
-                    elif isinstance(ex, HumanInputRequired):
-                        print("HumanInputRequired: Agent handling incomplete, attempting to interpret in human interface")
-                        print(ex)
+                        print(f"Requires the use of the --use-resumable-registry option.")
                     else:
                         # general exception reporting
                         # https://stackoverflow.com/questions/9823936/how-do-i-determine-what-type-of-exception-occurred
